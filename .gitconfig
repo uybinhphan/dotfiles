@@ -6,7 +6,8 @@
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 
-[alias] 
+[alias]
+	au = add -u							# Add updated files to staging
 	s = status -sb                      # Concise status output
 	co = checkout						# Checkout a branch			
 	cob = checkout -b                   # Checkout with branch creation
