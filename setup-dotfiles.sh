@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setup-dotfiles.sh - One-command dotfiles installation script for macOS
-# Usage: /bin/bash -c "$(curl -fsSL https://github.com/uybinhphan/dotfiles/tree/main/setup-dotfiles.sh)"
+# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/uybinhphan/dotfiles/main/setup-dotfiles.sh)"
 
 set -euo pipefail
 
@@ -291,6 +291,7 @@ setup_dotfiles_alias() {
 install_dependencies() {
     log_header "Installing additional dependencies"
     
+    # Check if .Brewfile exists
     if [[ -f "$HOME/.Brewfile" ]]; then
         log_info "Installing packages from Brewfile..."
         brew bundle --file="$HOME/.Brewfile"
@@ -307,6 +308,8 @@ install_dependencies() {
     else
         log_success "git-crypt already installed"
     fi
+
+
 }
 
 # Set up encrypted files

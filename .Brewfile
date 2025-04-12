@@ -1,0 +1,5 @@
+brew "git"
+brew "git-crypt"
+cask "git-credential-manager"
+brew "starship"
+brew "bat"
