@@ -1,0 +1,20 @@
+[user]
+	name = Uy Binh
+	email = uybinh@gmail.com
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+
+[alias] 
+	s = status -sb                      # Concise status output
+	co = checkout						# Checkout a branch			
+	cob = checkout -b                   # Checkout with branch creation
+	cp = cherry-pick					# Cherry-pick a commit	
+	cm = commit -m                      # Commit with message
+	ca = commit --amend                 # Amend previous commit
+	amend = commit --amend --no-edit    # Amend without changing message
+	unstage = reset HEAD --             # Unstage files
+	undo = reset --soft HEAD^           # Undo last commit, keep changes
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit # Pretty log output
+	recent = for-each-ref --sort=-committerdate --count=10 --format='%(refname:short)' refs/heads/ # Show recent branches
