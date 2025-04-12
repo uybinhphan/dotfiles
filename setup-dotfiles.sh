@@ -114,10 +114,18 @@ install_git_credential_manager() {
         log_success "Git Credential Manager installed"
     fi
     
-    # Configure Git to use GCM
+    # Check if GCM is already configured as a credential helper
     log_info "Configuring Git to use Git Credential Manager..."
-    git config --global credential.helper manager
-    log_success "Git Credential Manager configured as credential helper"
+    if git config --global --get-all credential.helper | grep -q "manager"; then
+        log_success "Git Credential Manager already configured as a credential helper"
+    else
+        # Append GCM to the list of credential helpers
+        git config --global --add credential.helper manager
+        if [[ $? -ne 0 ]]; then
+            log_error "Failed to configure Git Credential Manager as a credential helper"
+        fi
+        log_success "Git Credential Manager added as a credential helper"
+    fi
 }
 
 # Configure Git
@@ -147,10 +155,21 @@ configure_git() {
 clone_dotfiles() {
     log_header "Setting up dotfiles repository"
     
+    # Define the dotfiles alias
+    function dotfiles {
+        /usr/bin/git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"
+    }
+    
+    # Export the function for subshells
+    export -f dotfiles
+
     # Verify GCM is configured
-    if ! git config --global credential.helper | grep -q "manager"; then
+    if ! git config --global --get-all credential.helper | grep -q "manager"; then
         log_warning "Git Credential Manager not configured. Attempting to configure now..."
-        git config --global credential.helper manager
+        git config --global --add credential.helper manager
+        if [[ $? -ne 0 ]]; then
+            log_error "Failed to configure Git Credential Manager"
+        fi
     fi
     
     if [[ -d "$DOTFILES_DIR" ]]; then
@@ -162,6 +181,13 @@ clone_dotfiles() {
             rm -rf "$DOTFILES_DIR"
         else
             log_info "Using existing dotfiles directory"
+            # Verify the existing directory is a valid bare repository
+            if ! dotfiles rev-parse --is-bare-repository &>/dev/null; then
+                log_error "Existing $DOTFILES_DIR is not a valid bare Git repository"
+            fi
+            # Configure the existing repository
+            dotfiles config --local status.showUntrackedFiles no
+            log_success "Using existing dotfiles repository"
             return
         fi
     fi
@@ -173,13 +199,6 @@ clone_dotfiles() {
         log_error "Failed to clone dotfiles repository. Please check your credentials and repository URL."
     fi
     
-    # Define the dotfiles alias
-    function dotfiles {
-        /usr/bin/git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"
-    }
-    
-    # Export the function for subshells
-    export -f dotfiles
     
     # Hide untracked files
     dotfiles config --local status.showUntrackedFiles no
@@ -190,6 +209,11 @@ clone_dotfiles() {
 # Backup existing dotfiles
 backup_existing_dotfiles() {
     log_header "Checking for conflicts with existing dotfiles"
+    
+    # Check if dotfiles command is available and repository exists
+    if ! command -v dotfiles &>/dev/null || ! [[ -d "$DOTFILES_DIR" ]] || ! dotfiles rev-parse --is-bare-repository &>/dev/null; then
+        log_error "Dotfiles repository not set up correctly at $DOTFILES_DIR. Cannot check for conflicts."
+    fi
     
     # Get a list of tracked files in the dotfiles repo
     local tracked_files
@@ -219,9 +243,7 @@ backup_existing_dotfiles() {
             local full_path="$HOME/$file"
             if [[ -e "$full_path" && ! -L "$full_path" ]]; then
                 log_info "Backing up $full_path to $BACKUP_DIR/"
-                # Create directory structure
                 mkdir -p "$(dirname "$BACKUP_DIR/$file")"
-                # Move the file
                 mv "$full_path" "$BACKUP_DIR/$file"
             fi
         done <<< "$tracked_files"
