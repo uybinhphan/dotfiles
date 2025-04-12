@@ -23,3 +23,7 @@
 [push]
 	default = current					# Push current branch to its upstream branch
 	autoSetupRemote = true				# Automatically set the upstream when pushing a new branch
+
+[diff]
+	algorithm = histogram		# Use histogram diff algorithm for better performance on large files
+	colorMoved = default		# Show moved lines as separate blocks instead of delete/add
