@@ -7,8 +7,9 @@
 	useHttpPath = true
 
 [alias]
-	au = add -u							# Add updated files to staging
+	a = add								# Add files to staging
 	s = status -sb                      # Concise status output
+	au = add -u							# Add updated files to staging
 	co = checkout						# Checkout a branch			
 	cob = checkout -b                   # Checkout with branch creation
 	cp = cherry-pick					# Cherry-pick a commit	
