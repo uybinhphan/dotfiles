@@ -51,3 +51,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 for file in ~/.zsh/plugins/*.zsh; do
     source "$file"
 done
+
+# Add Docker CLI to PATH
+# This is useful for macOS users who have installed Docker
+# and want to use Docker CLI
+export PATH=$PATH:~/.docker/bin 
