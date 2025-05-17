@@ -32,3 +32,23 @@ alias weather="curl wttr.in"
 export PATH="$PATH:/Users/uybinh/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Enable autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Enable syntax highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Enable zsh-completions
+# Check if Homebrew is installed and add zsh-completions to FPATH
+# This is useful for macOS users who have installed Homebrew
+# and want to use zsh-completions
+# Check if Homebrew is installed
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+fi
+
+# Optional: case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
