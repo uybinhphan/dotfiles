@@ -1,5 +1,8 @@
+# Alias for managing dotfiles using a bare Git repository
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-eval "$(starship init zsh)"
+
+# Initialize Starship prompt
+eval "$(starship init zsh)" 
 
 # Navigation
 alias ..="cd .."
@@ -25,3 +28,7 @@ alias path="echo -e ${PATH//:/\\n}"
 alias now="date +\"%T\""
 alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/uybinh/.lmstudio/bin"
+# End of LM Studio CLI section
+
