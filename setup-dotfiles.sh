@@ -291,13 +291,13 @@ setup_dotfiles_alias() {
 install_dependencies() {
     log_header "Installing additional dependencies"
     
-    # Check if .Brewfile exists
-    if [[ -f "$HOME/.Brewfile" ]]; then
+    # Check if Brewfile exists
+    if [[ -f "$HOME/Brewfile" ]]; then
         log_info "Installing packages from Brewfile..."
-        brew bundle --file="$HOME/.Brewfile"
+        brew bundle --file="$HOME/Brewfile"
         log_success "Brewfile packages installed"
     else
-        log_warning "No Brewfile found at $HOME/.Brewfile"
+        log_warning "No Brewfile found at $HOME/Brewfile"
     fi
     
     # Install git-crypt for encrypted files
