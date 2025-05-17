@@ -12,12 +12,6 @@ alias ~="cd ~"
 alias dl="cd ~/Downloads"
 alias dc="cd ~/Documents"
 
-# Listing files
-alias ls="ls --color=auto"
-alias ll="ls -alFh"
-alias la="ls -A"
-alias l="ls -CF"
-
 # Misc utilities
 alias c="clear"
 alias h="history"
@@ -52,3 +46,8 @@ fi
 
 # Optional: case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# Load personal "plugins"
+for file in ~/.zsh/plugins/*.zsh; do
+    source "$file"
+done
