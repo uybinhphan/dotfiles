@@ -52,7 +52,12 @@ for file in ~/.zsh/plugins/*.zsh; do
     source "$file"
 done
 
-# Add Docker CLI to PATH
+
 # This is useful for macOS users who have installed Docker
-# and want to use Docker CLI
-export PATH=$PATH:~/.docker/bin 
+# and want to use Docker CLI commands in local user space
+# Check if Docker is installed
+if type docker &>/dev/null; then
+    # Add Docker CLI to PATH
+    export PATH=$PATH:~/.docker/bin 
+fi
+# Then add Docker CLI to PATH
