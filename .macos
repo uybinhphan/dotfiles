@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# macOS Configuration Script
+# This script applies common macOS settings to enhance usability and productivity.
+# Usage: Source this script in your terminal or include it in your setup process.
+
+# Set Dock size and magnification
+defaults write com.apple.dock tilesize -int 36 # Set Dock icon size to 36 pixels
+defaults write com.apple.dock magnification -bool true  # Enable magnification
+defaults write com.apple.dock largesize -int 56 # Set magnified icon size to 56 pixels
+
+# Show status bar in Finder
+defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
+# Show path bar in Finder
+defaults write com.apple.finder ShowPathbar -bool true  # Show path bar
+
+# Restart affected applications
+killall Dock
+killall Finder
+
+# Print completion message
+echo "macOS settings have been applied. Some changes may require a logout/restart to take effect."
