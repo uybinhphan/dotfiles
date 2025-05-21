@@ -312,6 +312,73 @@ install_dependencies() {
 
 }
 
+# Install uv
+install_uv() {
+    log_header "Installing uv"
+
+    if brew list uv &>/dev/null; then
+        log_success "uv already installed"
+    else
+        log_info "Installing uv..."
+        brew install uv
+        log_success "uv installed"
+    fi
+}
+
+# Install NVM (Node Version Manager)
+install_nvm() {
+    log_header "Installing NVM (Node Version Manager)"
+
+    if command -v nvm &>/dev/null; then
+        log_success "NVM already installed"
+    else
+        log_info "Installing NVM..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+        # Load NVM into the current shell session
+        # export NVM_DIR="$HOME/.nvm"
+        # [ -s "$NVM_DIR/nvm.sh" ] && \ . "$NVM_DIR/nvm.sh"
+        # [ -s "$NVM_DIR/bash_completion" ] && \ . "$NVM_DIR/bash_completion"
+        # already done in .zshrc
+
+        log_success "NVM installed"
+    fi
+
+    # Install and configure Node.js LTS version
+    log_info "Installing and configuring Node.js LTS version..."
+    nvm install --lts
+    nvm use --lts
+    nvm alias default 'lts/*'
+    log_success "Node.js LTS version installed and set as default"
+}
+
+# Install pnpm using Node's built-in Corepack
+install_pnpm() {
+    log_header "Installing pnpm using Node's built-in Corepack"
+
+    # Optional: Use NVM if available
+    if [ -s "$HOME/.nvm/nvm.sh" ]; then
+        log_info "Loading NVM..."
+        source "$HOME/.nvm/nvm.sh"
+        nvm use --lts
+    fi
+
+    log_info "Node version: $(node -v)"
+    log_info "NPM version: $(npm -v)"
+
+    # Step 1: Enable Corepack
+    log_info "Enabling Corepack..."
+    corepack enable
+
+    # Step 2: Install PNPM via Corepack
+    log_info "Installing pnpm via Corepack..."
+    corepack prepare pnpm@latest --activate
+
+    # Confirm installation
+    log_success "pnpm version: $(pnpm -v)"
+    log_success "pnpm installed successfully (user-local, no global pollution)"
+}
+
 # Set up encrypted files
 setup_encrypted_files() {
     log_header "Setting up encrypted files"
@@ -396,6 +463,9 @@ main() {
     
     # Additional setup
     install_dependencies
+    install_uv
+    install_nvm
+    install_pnpm
     setup_encrypted_files
     configure_macos
     run_post_install
