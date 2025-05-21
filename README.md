@@ -2,6 +2,19 @@
 
 This repository contains a script to automate the setup of dotfiles on macOS, including development tools, Git configuration, and custom system settings. The script is designed to streamline the process of configuring a new macOS machine with a consistent development environment.
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [File Structure](#file-structure)
+- [Customization](#customization)
+- [Backup](#backup)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - **Automated Installation**: Installs Xcode Command Line Tools, Homebrew, Git, and Git Credential Manager.
@@ -26,7 +39,13 @@ Run the following command to execute the setup script:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/uybinhphan/dotfiles/main/setup-dotfiles.sh)"
 ```
 
-This command downloads and runs the `setup-dotfiles.sh` script from this repository.
+**Note**: For security, you can download the script and inspect it before running:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/uybinhphan/dotfiles/main/setup-dotfiles.sh -o setup-dotfiles.sh
+less setup-dotfiles.sh
+/bin/bash setup-dotfiles.sh
+```
 
 ### What the Script Does
 
@@ -125,12 +144,19 @@ killall Dock
 
 Existing dotfiles are backed up to `~/.dotfiles-backup-YYYYMMDDHHMMSS/` if they would be overwritten. Check this directory if you need to restore any files.
 
+To restore a file:
+
+```bash
+mv ~/.dotfiles-backup-YYYYMMDDHHMMSS/.zshrc ~/
+```
+
 ## Troubleshooting
 
 - **Script fails on non-macOS systems**: The script is macOS-specific. Use a macOS machine.
 - **Git clone errors**: Ensure you have access to the repository and Git Credential Manager is configured.
 - **Checkout conflicts**: Check `~/.dotfiles-backup-*/` for backed-up files and manually resolve conflicts.
 - **Missing dependencies**: Verify Homebrew is installed and working (`brew doctor`).
+- **NVM issues**: Ensure the latest version of NVM is installed and sourced correctly.
 
 ## Contributing
 
