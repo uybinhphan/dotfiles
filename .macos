@@ -14,6 +14,11 @@ defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
 # Show path bar in Finder
 defaults write com.apple.finder ShowPathbar -bool true  # Show path bar
 
+# Set shutdown shortcut "Shut Down…" to Cmd+Option+S
+defaults write -g NSUserKeyEquivalents -dict-add "Shut Down…" "@~S"
+# Set restart shortcut "Restart…" to Cmd+Option+R
+defaults write -g NSUserKeyEquivalents -dict-add "Restart…" "@~R"
+
 # Restart affected applications
 killall Dock
 killall Finder
