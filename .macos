@@ -9,6 +9,9 @@ defaults write com.apple.dock tilesize -int 36 # Set Dock icon size to 36 pixels
 defaults write com.apple.dock magnification -bool true  # Enable magnification
 defaults write com.apple.dock largesize -int 56 # Set magnified icon size to 56 pixels
 
+# Move Dock to the right side of the screen
+defaults write com.apple.dock orientation -string "right"  # Set Dock position to right
+
 # Show status bar in Finder
 defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
 # Show path bar in Finder
