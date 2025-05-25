@@ -5,12 +5,12 @@
 # Usage: Source this script in your terminal or include it in your setup process.
 
 # Set Dock size and magnification
-defaults write com.apple.dock tilesize -int 48 # Set Dock icon size to 48 pixels
+defaults write com.apple.dock tilesize -int 40 # Set Dock icon size to 40 pixels
 # defaults write com.apple.dock magnification -bool true  # Enable magnification
 # defaults write com.apple.dock largesize -int 56 # Set magnified icon size to 56 pixels
 
 # Move Dock to the right side of the screen
-defaults write com.apple.dock orientation -string "right"  # Set Dock position to right
+defaults write com.apple.dock orientation -string "left"  # Set Dock position to left
 
 # Show status bar in Finder
 defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
