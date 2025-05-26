@@ -1,4 +1,4 @@
-# ~/.zsh/plugins/eza.zsh
+# ~/.zsh/plugins/eza.plugin.zsh
 
 # Prefer eza over ls, fallback to ls if not available
 if command -v eza &> /dev/null; then
