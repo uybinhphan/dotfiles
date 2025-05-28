@@ -14,8 +14,8 @@ defaults write com.apple.dock orientation -string "bottom"  # Set Dock position 
 
 # Set bottom-left hotcorner to Mission Control 
 defaults write com.apple.dock wvous-bl-corner -int 2  # Bottom-left corner for Mission Control
-# Set bottom-right hotcorner to Desktop
-defaults write com.apple.dock wvous-br-corner -int 4  # Bottom-right corner for Desktop
+# Set bottom-right hotcorner to Application Windows
+defaults write com.apple.dock wvous-br-corner -int 3  # Bottom-right corner for Application Windows
 
 # Show status bar in Finder
 defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
