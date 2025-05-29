@@ -65,3 +65,6 @@ fi
 
 # Initialize fnm (Fast Node Manager)
 eval "$(fnm env --use-on-cd --shell zsh)"
+
+# Initialize zoxide 
+eval "$(zoxide init zsh)"
