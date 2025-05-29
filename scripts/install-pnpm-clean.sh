@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# CURRENTLY NOT USING IN MY SETUP
+# Using `fnm` so won't use `nvm` 
+
 set -e
 
 # Optional: Use NVM if available
