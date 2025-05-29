@@ -11,7 +11,6 @@ echo "📦 Installing fnm via Homebrew..."
 brew install fnm
 
 # --- Shell Configuration ---
-SHELL_NAME="$(basename "$SHELL")"
 FNM_INIT='eval "$(fnm env --use-on-cd --shell zsh)"'
 SHELL_CONFIG_FILE=SHELL_CONFIG_FILE="$HOME/.zshrc"
 
