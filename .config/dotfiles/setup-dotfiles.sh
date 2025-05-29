@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setup-dotfiles.sh - One-command dotfiles installation script for macOS
-# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/uybinhphan/dotfiles/main/setup-dotfiles.sh)"
+# Usage: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/uybinhphan/dotfiles/main/.config/dotfiles/setup-dotfiles.sh)"
 
 set -euo pipefail
 
@@ -292,12 +292,12 @@ install_dependencies() {
     log_header "Installing additional dependencies"
     
     # Check if Brewfile exists
-    if [[ -f "$HOME/Brewfile" ]]; then
+    if [[ -f "$HOME/.config/dotfiles/Brewfile" ]]; then
         log_info "Installing packages from Brewfile..."
-        brew bundle --file="$HOME/Brewfile"
+        brew bundle --file="$HOME/.config/dotfiles/Brewfile"
         log_success "Brewfile packages installed"
     else
-        log_warning "No Brewfile found at $HOME/Brewfile"
+        log_warning "No Brewfile found at $HOME/.config/dotfiles/Brewfile"
     fi
     
     # Install git-crypt for encrypted files
@@ -415,9 +415,9 @@ setup_encrypted_files() {
 configure_macos() {
     log_header "Configuring macOS settings"
     
-    if [[ -f "$HOME/.macos" ]]; then
+    if [[ -f "$HOME/.config/dotfiles/.macos" ]]; then
         log_info "Applying macOS settings from .macos script..."
-        source "$HOME/.macos"
+        source "$HOME/.config/dotfiles/.macos"
         log_success "macOS settings applied"
     else
         log_warning "No .macos configuration script found"
@@ -428,8 +428,8 @@ configure_macos() {
 run_post_install() {
     log_header "Running post-installation scripts"
     
-    if [[ -d "$HOME/.dotfiles.d" ]]; then
-        for script in "$HOME/.dotfiles.d"/*.sh; do
+    if [[ -d "$HOME/.config/dotfiles/scripts" ]]; then
+        for script in "$HOME/.config/dotfiles/scripts"/*.sh; do
             if [[ -f "$script" && -x "$script" ]]; then
                 log_info "Running post-install script: $(basename "$script")..."
                 "$script"

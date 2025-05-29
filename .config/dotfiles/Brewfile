@@ -1,6 +1,8 @@
 brew "bat"
 brew "eza"
 brew "ffmpeg"
+brew "fnm"
+brew "fzf"
 brew "git"
 brew "git-crypt"
 brew "starship"
