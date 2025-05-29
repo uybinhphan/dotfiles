@@ -12,7 +12,7 @@ brew install fnm
 
 # --- Shell Configuration ---
 FNM_INIT='eval "$(fnm env --use-on-cd --shell zsh)"'
-SHELL_CONFIG_FILE=SHELL_CONFIG_FILE="$HOME/.zshrc"
+SHELL_CONFIG_FILE="$HOME/.zshrc"
 
 echo "🔧 Configuring fnm for your shell..."
 
