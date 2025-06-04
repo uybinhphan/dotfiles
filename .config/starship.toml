@@ -21,7 +21,10 @@ symbol = " "
 symbol = " "
 
 [conda]
-symbol = " "
+format = '[$symbol$environment](dimmed green) '
+symbol = '🅒 '  # or any symbol you prefer
+style = 'bold green'
+ignore_base = true  # hides 'base' env if you want
 
 [crystal]
 symbol = " "
