@@ -21,7 +21,7 @@ symbol = " "
 symbol = " "
 
 [conda]
-format = '[$symbol$environment](dimmed green) '
+format = '[$symbol$environment](green) '
 symbol = '🅒 '  # or any symbol you prefer
 style = 'bold green'
 ignore_base = true  # hides 'base' env if you want
