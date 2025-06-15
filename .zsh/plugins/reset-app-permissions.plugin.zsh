@@ -41,10 +41,17 @@ reset-app-permissions() {
     print -P "${CYAN}INFO:${NC} The app will need to request permissions again when you next use it."
     print
 
-    # Get user confirmation (zsh compatible)
+    # Get user confirmation (single keypress)
     local response
     print -n "${WHITE}CONFIRM:${NC} Are you sure you want to reset all permissions for this app? ${BOLD}(y/N):${NC} "
-    read response
+    
+    # Read single character without requiring Enter
+    if [[ -n "$ZSH_VERSION" ]]; then
+        read -k 1 response
+    else
+        read -n 1 response
+    fi
+    print  # Add newline after the single character input
 
     case "$response" in
         [yY]|[yY][eE][sS])
