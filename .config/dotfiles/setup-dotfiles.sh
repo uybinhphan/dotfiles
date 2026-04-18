@@ -107,48 +107,21 @@ install_git_credential_manager() {
         log_success "Git Credential Manager already installed"
     else
         log_info "Installing Git Credential Manager..."
-        brew install git-credential-manager
-        if [[ $? -ne 0 ]]; then
+        if ! brew install git-credential-manager; then
             log_error "Failed to install Git Credential Manager"
         fi
         log_success "Git Credential Manager installed"
     fi
-    
+
     # Check if GCM is already configured as a credential helper
     log_info "Configuring Git to use Git Credential Manager..."
     if git config --global --get-all credential.helper | grep -q "manager"; then
         log_success "Git Credential Manager already configured as a credential helper"
     else
-        # Append GCM to the list of credential helpers
-        git config --global --add credential.helper manager
-        if [[ $? -ne 0 ]]; then
+        if ! git config --global --add credential.helper manager; then
             log_error "Failed to configure Git Credential Manager as a credential helper"
         fi
         log_success "Git Credential Manager added as a credential helper"
-    fi
-}
-
-# Configure Git
-configure_git() {
-    log_header "Configuring Git"
-    
-    # Only configure if there's no existing configuration
-    if [[ ! -f "$HOME/.gitconfig" ]]; then
-        log_info "Setting up basic Git configuration..."
-        
-        # Get user input for Git configuration
-        read -p "Enter your Git name: " git_name
-        read -p "Enter your Git email: " git_email
-        
-        git config --global user.name "$git_name"
-        git config --global user.email "$git_email"
-        git config --global init.defaultBranch main
-        git config --global pull.rebase false
-        git config --global core.editor "vim"
-        
-        log_success "Git configured"
-    else
-        log_success "Git already configured"
     fi
 }
 
@@ -166,8 +139,7 @@ clone_dotfiles() {
     # Verify GCM is configured
     if ! git config --global --get-all credential.helper | grep -q "manager"; then
         log_warning "Git Credential Manager not configured. Attempting to configure now..."
-        git config --global --add credential.helper manager
-        if [[ $? -ne 0 ]]; then
+        if ! git config --global --add credential.helper manager; then
             log_error "Failed to configure Git Credential Manager"
         fi
     fi
@@ -193,9 +165,7 @@ clone_dotfiles() {
     fi
     
     log_info "Cloning dotfiles repository to $DOTFILES_DIR..."
-    # Attempt to clone with GCM
-    git clone --bare "$DOTFILES_REPO" "$DOTFILES_DIR"
-    if [[ $? -ne 0 ]]; then
+    if ! git clone --bare "$DOTFILES_REPO" "$DOTFILES_DIR"; then
         log_error "Failed to clone dotfiles repository. Please check your credentials and repository URL."
     fi
     
@@ -259,12 +229,10 @@ apply_dotfiles() {
     log_header "Applying dotfiles"
     
     log_info "Checking out dotfiles to home directory..."
-    dotfiles checkout
-    
-    if [[ $? -ne 0 ]]; then
+    if ! dotfiles checkout; then
         log_error "Failed to checkout dotfiles. Please check for conflicts."
     fi
-    
+
     log_success "Dotfiles applied successfully"
 }
 
@@ -399,8 +367,7 @@ main() {
     install_homebrew
     install_git
     install_git_credential_manager
-    configure_git
-    
+
     # Dotfiles setup
     clone_dotfiles
     backup_existing_dotfiles

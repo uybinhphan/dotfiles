@@ -23,7 +23,7 @@ alias now="date +\"%T\""
 alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/uybinh/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 # Enable autosuggestions
@@ -41,7 +41,14 @@ if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
     autoload -Uz compinit
-    compinit
+    # Cache compinit dump; regenerate only if missing or older than 24h
+    _zcompdump_fresh=(${ZDOTDIR:-$HOME}/.zcompdump(Nmh-24))
+    if (( ${#_zcompdump_fresh} )); then
+        compinit -C
+    else
+        compinit
+    fi
+    unset _zcompdump_fresh
 fi
 
 # Optional: case-insensitive completion
