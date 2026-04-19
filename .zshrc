@@ -22,6 +22,9 @@ alias path="echo -e ${PATH//:/\\n}"
 alias now="date +\"%T\""
 alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
+# Claude Code 
+export PATH="$PATH:$HOME/.local/bin" 
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
