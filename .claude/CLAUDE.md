@@ -31,8 +31,6 @@ Hướng dẫn cá nhân áp dụng cho mọi phiên Claude Code của user `uyb
 ## Git workflow
 
 - **Commit theo Conventional Commits**: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`, `perf:`, `style:`, `build:`, `ci:`. Scope optional: `feat(auth): ...`. Message subject ngắn, mô tả WHY ở body nếu cần.
-- **Hỏi trước khi commit**: không tự động `git commit` / `git push` trừ khi user yêu cầu rõ ràng. Có thể `git add` + draft message rồi chờ xác nhận.
-- **Không tự push** lên remote khi chưa được phép.
 
 ## Môi trường
 
