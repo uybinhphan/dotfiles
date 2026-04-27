@@ -11,6 +11,7 @@ This repository contains a script to automate the setup of dotfiles on macOS, in
 - [File Structure](#file-structure)
 - [Customization](#customization)
 - [Backup](#backup)
+- [Claude Code Settings](#claude-code-settings)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
@@ -149,6 +150,32 @@ To restore a file:
 ```bash
 mv ~/.dotfiles-backup-YYYYMMDDHHMMSS/.zshrc ~/
 ```
+
+## Claude Code Settings
+
+Claude Code configuration is tracked in this repo for cross-machine sync:
+
+| File | Purpose |
+|------|---------|
+| `.claude/CLAUDE.md` | Global instructions for all Claude Code sessions |
+| `.claude/settings.json` | Global settings (status line, effort level, editor mode) |
+| `.claude/settings.local.json` | Allowed/denied tool permissions |
+| `.claude/projects/-Users-uybinh/memory/` | Persistent memory files (user profile, feedback, project context) |
+
+### Cross-machine memory path issue
+
+Memory files are stored under a directory named after the **absolute home path**, e.g. `-Users-uybinh`. This name is derived from `/Users/uybinh` with slashes replaced by dashes.
+
+On a machine with a **different username** (e.g. `/Users/john`), Claude Code will look for memory under `-Users-john` and won't find the synced files automatically.
+
+**Fix** — after checking out dotfiles on the new machine, create a symlink:
+
+```bash
+# Replace "john" with the actual username on the new machine
+ln -s ~/.claude/projects/-Users-uybinh ~/.claude/projects/-Users-john
+```
+
+If the username is the same across machines, no action is needed — the files are picked up automatically.
 
 ## Troubleshooting
 
