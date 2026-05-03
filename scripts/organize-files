@@ -1,12 +1,10 @@
 #!/bin/zsh
 set -euo pipefail
 
-# Defaults
 MAX_FILES=100
 TARGET_DIR="."
 COLOR=true
 
-# Parse args
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -h|--help)
@@ -25,20 +23,11 @@ Examples:
   organize-files ~/Downloads
   organize-files . --max-files 50
 EOF
-      exit 0
-      ;;
-    --max-files)
-      MAX_FILES="$2"; shift 2
-      ;;
-    --no-color)
-      COLOR=false; shift
-      ;;
-    -*)
-      echo "Unknown option: $1" >&2; exit 1
-      ;;
-    *)
-      TARGET_DIR="$1"; shift
-      ;;
+      exit 0 ;;
+    --max-files) MAX_FILES="$2"; shift 2 ;;
+    --no-color)  COLOR=false; shift ;;
+    -*)          echo "Unknown option: $1" >&2; exit 1 ;;
+    *)           TARGET_DIR="$1"; shift ;;
   esac
 done
 
@@ -49,73 +38,89 @@ else
   GREEN=''; YELLOW=''; BLUE=''; NC=''
 fi
 
-# Validate target
-if [[ ! -d "$TARGET_DIR" ]]; then
-  echo "Error: '$TARGET_DIR' is not a directory" >&2
-  exit 1
-fi
+[[ -d "$TARGET_DIR" ]] || { echo "Error: '$TARGET_DIR' is not a directory" >&2; exit 1; }
 cd "$TARGET_DIR"
 
-SCRIPT_NAME="$(basename "$0")"
-TODAY="$(date +%y%m%d)"
+PREFIX="$(date +%y%m%d)"
+SCRIPT_NAME="${0##*/}"
 
-# Collect regular files: non-hidden, non-dir, not self
+# Collect regular files: non-hidden, non-dir, exclude self
 files=()
 for f in *(.N); do
-  [[ "$f" == "$SCRIPT_NAME" ]] && continue
-  files+=("$f")
+  [[ "$f" != "$SCRIPT_NAME" ]] && files+=("$f")
 done
 
 total=${#files}
+(( total == 0 )) && { echo "Nothing to do — no files to organize."; exit 0; }
 
-if (( total == 0 )); then
-  echo "Nothing to do — no files to organize."
-  exit 0
-fi
-
-# Header
 echo "${BLUE}Target:${NC}  $(pwd)"
 echo "${BLUE}Files:${NC}   ${total} (max ${MAX_FILES} per subdir)"
-echo "${BLUE}Prefix:${NC}  ${TODAY}"
+echo "${BLUE}Prefix:${NC}  ${PREFIX}"
 echo "${BLUE}$(printf '─%.0s' {1..40})${NC}"
 
-# Find next available subdir slot for today's prefix
-find_target_dir() {
-  local prefix="$1"
-  local seq=""
+# Find or create next directory with capacity.
+# Tries plain YYMMDD first, then YYMMDD-01, YYMMDD-02, ...
+next_dir() {
+  local dir
 
+  # Try plain prefix first
+  dir="$PREFIX"
+  if [[ -d "$dir" ]]; then
+    local count=$(set -- "$dir"/*(.N); echo $#)
+    (( count < MAX_FILES )) && { echo "$dir"; return; }
+  else
+    mkdir "$dir"; echo "$dir"; return
+  fi
+
+  # Then numbered: -01, -02, ...
+  local seq=1
   while true; do
-    local dir="${prefix}${seq}"
+    printf -v dir "%s-%02d" "$PREFIX" $seq
     if [[ -d "$dir" ]]; then
-      local count=$(find "$dir" -maxdepth 1 -type f | wc -l | tr -d ' ')
-      if (( count < MAX_FILES )); then
-        echo "$dir"
-        return
-      fi
+      local count=$(set -- "$dir"/*(.N); echo $#)
+      (( count < MAX_FILES )) && { echo "$dir"; return; }
     else
-      mkdir "$dir"
-      echo "$dir"
-      return
+      mkdir "$dir"; echo "$dir"; return
     fi
-    # Next sequence
-    if [[ -z "$seq" ]]; then
-      seq="-01"
-    else
-      seq=$(printf "-%02d" $(( 10#${seq#-} + 1 )))
-    fi
+    (( seq++ ))
   done
 }
 
-declare -A moved
-n=0
-pad=${#total}
+# Move files
+typeset -A moved
+n=0 pad=${#total}
 
 for f in "${files[@]}"; do
-  dir=$(find_target_dir "$TODAY")
+  dir=$(next_dir)
   mv -- "$f" "$dir/"
   moved[$dir]=$(( ${moved[$dir]:-0} + 1 ))
   printf "  ${YELLOW}[%${pad}d/${total}]${NC} %s ${BLUE}→${NC} %s/\n" "$(( ++n ))" "$f" "$dir"
 done
+
+# Renumbering: when plain YYMMDD coexists with numbered dirs, shift all up by 1.
+# YYMMDD → YYMMDD-01, YYMMDD-01 → YYMMDD-02, ...
+dated_dirs=(${PREFIX}*(N/))
+if (( ${#dated_dirs} >= 2 )) && [[ -d "$PREFIX" ]]; then
+  typeset -A rename_map
+  for d in "${dated_dirs[@]}"; do
+    if [[ "$d" == "$PREFIX" ]]; then
+      rename_map[$d]="${PREFIX}-01"
+    elif [[ "$d" =~ "^${PREFIX}-([0-9]{2})$" ]]; then
+      rename_map[$d]=$(printf "%s-%02d" "$PREFIX" $(( 10#${match[1]} + 1 )))
+    fi
+  done
+
+  # Rename descending so target never already exists
+  for d in ${(On)${(k)rename_map}}; do
+    [[ "$d" != "${rename_map[$d]}" ]] && mv -- "$d" "${rename_map[$d]}"
+  done
+
+  # Update moved keys
+  typeset -A tmp
+  for d in ${(k)moved}; do tmp[${rename_map[$d]:-$d}]=${moved[$d]}; done
+  set -A moved
+  for d in ${(k)tmp}; do moved[$d]=${tmp[$d]}; done
+fi
 
 # Summary
 echo "${BLUE}$(printf '─%.0s' {1..40})${NC}"
