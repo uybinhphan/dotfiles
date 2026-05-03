@@ -19,7 +19,7 @@ Hướng dẫn cá nhân áp dụng cho mọi phiên Claude Code của user `uyb
 
 - **Hỏi trước khi làm** với task không hiển nhiên: xác nhận hướng tiếp cận trước, rồi thực thi từng bước.
 - Vẫn được tự do với thao tác local, đảo ngược được (đọc file, chạy test, sửa nháp).
-- **Bắt buộc xác nhận trước** với: commit, push, xoá file/branch, đổi shared state, install/uninstall package.
+- **Bắt buộc xác nhận trước** với: xoá file/branch, đổi shared state, install/uninstall package.
 
 ## Quy ước code
 

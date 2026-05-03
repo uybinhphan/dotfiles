@@ -13,7 +13,8 @@
     "playwright@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true
   },
-  "effortLevel": "medium",
+  "language": "Vietnamese",
+  "effortLevel": "high",
   "editorMode": "normal",
-  "model": "haiku"
+  "agentPushNotifEnabled": true
 }

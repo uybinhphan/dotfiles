@@ -139,3 +139,8 @@ fi
 
 # OpenClaw Completion
 source "/Users/uybinh/.openclaw/completions/openclaw.zsh"
+
+# Load private secrets, not committed to GitHub
+if [ -f "$HOME/.zsh_secrets" ]; then
+  source "$HOME/.zsh_secrets"
+fi

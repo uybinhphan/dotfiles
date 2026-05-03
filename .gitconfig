@@ -30,3 +30,5 @@
 	colorMoved = default		# Show moved lines as separate blocks instead of delete/add
 [init]
 	defaultBranch = main
+[credential "http://127.0.0.1:3002"]
+	provider = generic
