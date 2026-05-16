@@ -1,5 +1,6 @@
 # reset-app-permissions.plugin.zsh
 # Zsh plugin to reset macOS app permissions (using bash-compatible syntax)
+# shellcheck shell=bash
 
 # ANSI Color codes (bash style)
 RED='\033[0;31m'
@@ -26,10 +27,8 @@ reset-app-permissions() {
     print -P "${BLUE}Getting bundle identifier for:${NC} ${BOLD}$APP_NAME${NC}"
 
     # Get bundle identifier using osascript
-    local BUNDLE_ID=$(osascript -e "id of app \"$APP_NAME\"" 2>/dev/null)
-
-    # Check if bundle identifier was found (bash style)
-    if [ $? -ne 0 ] || [ -z "$BUNDLE_ID" ]; then
+    local BUNDLE_ID
+    if ! BUNDLE_ID=$(osascript -e "id of app \"$APP_NAME\"" 2>/dev/null) || [ -z "$BUNDLE_ID" ]; then
         print -P "${RED}ERROR:${NC} Could not find bundle identifier for ${BOLD}'$APP_NAME'${NC}"
         print -P "${YELLOW}Please check that the application name is correct and the app is installed.${NC}"
         return 1
@@ -47,18 +46,16 @@ reset-app-permissions() {
     
     # Read single character without requiring Enter
     if [[ -n "$ZSH_VERSION" ]]; then
-        read -k 1 response
+        read -rk 1 response
     else
-        read -n 1 response
+        read -rn 1 response
     fi
     print  # Add newline after the single character input
 
     case "$response" in
         [yY]|[yY][eE][sS])
             print -P "${BLUE}PROCESSING:${NC} Resetting permissions for ${BOLD}$APP_NAME${NC}..."
-            tccutil reset All "$BUNDLE_ID"
-            
-            if [ $? -eq 0 ]; then
+            if tccutil reset All "$BUNDLE_ID"; then
                 print -P "${GREEN}SUCCESS:${NC} Successfully reset permissions for ${BOLD}$APP_NAME${NC}"
                 print -P "${CYAN}NOTE:${NC} You may need to quit and restart the application for changes to take effect."
             else
@@ -81,8 +78,6 @@ _reset_app_permissions() {
     
     # For zsh, we need to handle completion differently
     if [[ -n "$ZSH_VERSION" ]]; then
-        local context state line
-        
         if [[ $CURRENT -eq 2 ]]; then
             # Get list of installed applications
             local apps=()
@@ -101,7 +96,9 @@ _reset_app_permissions() {
         fi
     else
         # Fallback for bash completion
-        local apps=$(find /Applications /System/Applications -maxdepth 2 -name "*.app" -type d 2>/dev/null | sed 's|.*/||g' | sed 's|\.app||g' | sort -u)
+        local apps
+        apps=$(find /Applications /System/Applications -maxdepth 2 -name "*.app" -type d 2>/dev/null | sed 's|.*/||g' | sed 's|\.app||g' | sort -u)
+        # shellcheck disable=SC2207,SC2128
         COMPREPLY=($(compgen -W "$apps" -- "$cur"))
     fi
 }

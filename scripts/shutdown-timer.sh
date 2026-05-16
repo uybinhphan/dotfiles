@@ -106,9 +106,8 @@ parse_time() {
         
         # Calculate seconds until target time
         local target_seconds=$((hour * 3600 + minute * 60))
-        local current_seconds=$(date +%s)
-        local current_day_seconds=$(date +%H | sed 's/^0//' | xargs -I {} echo "{} * 3600" | bc)
-        current_day_seconds=$((current_day_seconds + $(date +%M | sed 's/^0//' | xargs -I {} echo "{} * 60" | bc)))
+        local current_day_seconds
+        current_day_seconds=$(( 10#$(date +%H) * 3600 + 10#$(date +%M) * 60 ))
         
         if [[ "$target_seconds" -le "$current_day_seconds" ]]; then
             # Target time is tomorrow
