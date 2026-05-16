@@ -144,3 +144,5 @@ source "/Users/uybinh/.openclaw/completions/openclaw.zsh"
 if [ -f "$HOME/.zsh_secrets" ]; then
   source "$HOME/.zsh_secrets"
 fi
+# Added by Antigravity
+export PATH="/Users/uybinh/.antigravity/antigravity/bin:$PATH"
