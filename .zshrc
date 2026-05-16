@@ -25,9 +25,6 @@ alias weather="curl wttr.in"
 # Claude Code 
 export PATH="$PATH:$HOME/.local/bin" 
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
 
 # Enable autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -60,7 +57,7 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 
 # Load personal "plugins"
-for file in ~/.zsh/plugins/*.zsh; do
+for file in ~/.zsh/plugins/*.zsh(N); do
     source "$file"
 done
 
@@ -81,15 +78,19 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 # Initialize zoxide 
 eval "$(zoxide init zsh)"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/uybinh/.lmstudio/bin"
-# End of LM Studio CLI section
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 
-# Initialize pyenv
+# Lazy-load pyenv — only initialize when pyenv is first called
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+if [[ -d $PYENV_ROOT ]]; then
+    pyenv() {
+        unfunction pyenv
+        eval "$(command pyenv init -)"
+        pyenv "$@"
+    }
+fi
 
 # Ollama MLX backend
 export OLLAMA_USE_MLX=1
