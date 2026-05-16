@@ -194,30 +194,30 @@ backup_existing_dotfiles() {
         return
     fi
     
-    # Check each tracked file for conflicts
+    # Check each tracked file for conflicts — only flag files that differ from HEAD
     local has_conflicts=false
-    while IFS= read -r file; do
-        file="$HOME/$file"
-        if [[ -e "$file" && ! -L "$file" ]]; then
+    while IFS= read -r relative_file; do
+        local full_path="$HOME/$relative_file"
+        if [[ -e "$full_path" && ! -L "$full_path" ]] && ! dotfiles diff --quiet HEAD -- "$relative_file" 2>/dev/null; then
             has_conflicts=true
             break
         fi
     done <<< "$tracked_files"
-    
+
     # If we found conflicts
     if [[ "$has_conflicts" == "true" ]]; then
         log_warning "Found existing dotfiles that would be overwritten"
         mkdir -p "$BACKUP_DIR"
-        
-        while IFS= read -r file; do
-            local full_path="$HOME/$file"
-            if [[ -e "$full_path" && ! -L "$full_path" ]]; then
+
+        while IFS= read -r relative_file; do
+            local full_path="$HOME/$relative_file"
+            if [[ -e "$full_path" && ! -L "$full_path" ]] && ! dotfiles diff --quiet HEAD -- "$relative_file" 2>/dev/null; then
                 log_info "Backing up $full_path to $BACKUP_DIR/"
-                mkdir -p "$(dirname "$BACKUP_DIR/$file")"
-                mv "$full_path" "$BACKUP_DIR/$file"
+                mkdir -p "$(dirname "$BACKUP_DIR/$relative_file")"
+                mv "$full_path" "$BACKUP_DIR/$relative_file"
             fi
         done <<< "$tracked_files"
-        
+
         log_success "Existing dotfiles backed up to $BACKUP_DIR"
     else
         log_success "No conflicts found"
