@@ -2,6 +2,7 @@
 input=$(cat)
 
 model=$(echo "$input" | jq -r '.model.display_name // ""')
+ctx_used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 five_hour_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 five_hour_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 seven_day_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
@@ -29,10 +30,35 @@ rate_color() {
   fi
 }
 
+make_bar() {
+  local pct=$1
+  local filled=$(echo "$pct * 8 / 100" | bc)
+  local empty=$((8 - filled))
+  local bar=""
+  local i
+  for ((i=0; i<filled; i++)); do bar="${bar}█"; done
+  for ((i=0; i<empty; i++)); do bar="${bar}░"; done
+  printf "%s" "$bar"
+}
+
 out="🤖"
 
 # Model
 [ -n "$model" ] && out="${out} ${model}"
+
+# Context window progress bar (placed right after model)
+if [ -n "$ctx_used" ]; then
+  ctx_int=$(printf "%.0f" "$ctx_used")
+  if [ "$(echo "$ctx_used < 50" | bc)" = "1" ]; then
+    ctx_color="$GREEN"
+  elif [ "$(echo "$ctx_used < 80" | bc)" = "1" ]; then
+    ctx_color="$YELLOW"
+  else
+    ctx_color="$RED"
+  fi
+  bar=$(make_bar "$ctx_int")
+  out="${out}  ${ctx_color}ctx: ${bar} ${ctx_int}%${RESET}"
+fi
 
 # Session (5h) usage + reset time
 if [ -n "$five_hour_pct" ]; then
