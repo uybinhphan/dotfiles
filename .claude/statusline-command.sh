@@ -12,32 +12,51 @@ cwd=$(echo "$input" | jq -r '.cwd // ""')
 home_dir="$HOME"
 cwd="${cwd/#$home_dir/~}"
 
-parts="🤖"
+RESET=$'\033[0m'
+GREEN=$'\033[32m'
+YELLOW=$'\033[33m'
+RED=$'\033[31m'
+BOLD_CYAN=$'\033[1;36m'
+
+rate_color() {
+  local pct=$1
+  if [ "$(echo "$pct < 50" | bc)" = "1" ]; then
+    printf "%s" "$GREEN"
+  elif [ "$(echo "$pct < 80" | bc)" = "1" ]; then
+    printf "%s" "$YELLOW"
+  else
+    printf "%s" "$RED"
+  fi
+}
+
+out="🤖"
 
 # Model
-[ -n "$model" ] && parts="${parts} ${model}"
+[ -n "$model" ] && out="${out} ${model}"
 
 # Session (5h) usage + reset time
 if [ -n "$five_hour_pct" ]; then
   five_int=$(printf "%.0f" "$five_hour_pct")
+  color=$(rate_color "$five_hour_pct")
   reset_str=""
   if [ -n "$five_hour_reset" ]; then
     reset_str=" $(date -r "$five_hour_reset" +%H:%M)"
   fi
-  parts="${parts}  5h:${five_int}%${reset_str}"
+  out="${out}  ${color}5h:${five_int}%${reset_str}${RESET}"
 fi
 
 # Weekly (7d) usage + reset time
 if [ -n "$seven_day_pct" ]; then
   seven_int=$(printf "%.0f" "$seven_day_pct")
+  color=$(rate_color "$seven_day_pct")
   reset_str=""
   if [ -n "$seven_day_reset" ]; then
     reset_str=" $(date -r "$seven_day_reset" "+%a%d/%m %H:%M")"
   fi
-  parts="${parts}  7d:${seven_int}%${reset_str}"
+  out="${out}  ${color}7d:${seven_int}%${reset_str}${RESET}"
 fi
 
-# Current working directory
-[ -n "$cwd" ] && parts="${parts}  ${cwd}"
+# Current working directory (bold cyan)
+[ -n "$cwd" ] && out="${out}  ${BOLD_CYAN}${cwd}${RESET}"
 
-printf "%s" "$parts"
+printf "%s" "$out"
