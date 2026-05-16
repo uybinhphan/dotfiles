@@ -23,14 +23,24 @@ alias now="date +\"%T\""
 alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
 # Claude Code 
-export PATH="$PATH:$HOME/.local/bin" 
+export PATH="$PATH:$HOME/.local/bin"
 
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY HIST_VERIFY
 
 # Enable autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Enable syntax highlighting
 source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+# History substring search — load after syntax highlighting, bind arrows
+source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # Enable zsh-completions
 # Check if Homebrew is installed and add zsh-completions to FPATH
