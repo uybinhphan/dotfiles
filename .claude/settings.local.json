@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(dotfiles status *)",
-      "Bash(dotfiles diff *)",
-      "Bash(dotfiles log *)"
-    ]
-  }
-}

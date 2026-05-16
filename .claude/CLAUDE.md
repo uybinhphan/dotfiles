@@ -11,7 +11,7 @@ Hướng dẫn cá nhân áp dụng cho mọi phiên Claude Code của user `uyb
 
 ## Phong cách giao tiếp
 
-- **Ngôn ngữ**: trả lời theo ngôn ngữ user dùng trong câu hỏi (tiếng Việt → tiếng Việt, tiếng Anh → tiếng Anh).
+- **Ngôn ngữ**: trả lời theo ngôn ngữ user dùng trong câu hỏi (tiếng Việt → tiếng Việt, English → English).
 - **Độ dài**: ngắn gọn vừa phải. Kèm 1–2 câu lý do hoặc trade-off khi quyết định không hiển nhiên. Không lan man, không lặp lại diff.
 - **Khi không chắc**: nói thẳng "không chắc" + đề xuất cách verify, đừng đoán.
 
@@ -41,7 +41,7 @@ Hướng dẫn cá nhân áp dụng cho mọi phiên Claude Code của user `uyb
   ```
   Không dùng `git` thường để thao tác file dotfiles.
 - **Packages macOS**: Homebrew là source of truth. App/CLI mới → đề xuất thêm vào `~/.config/dotfiles/Brewfile`.
-- **Node**: `fnm` (không phải nvm).
+- **Node/JS/TS**: `bun` là runtime và package manager mặc định (`bun install`, `bun run`, `bun <file.ts>`). Giữ `fnm` để quản lý Node.js version cho project yêu cầu Node cụ thể.
 - **Python**: `uv` (không pip/poetry trực tiếp trừ khi project yêu cầu).
 - **File listing**: `eza` đã alias `ls`/`ll`/`la`/`lt`.
 
