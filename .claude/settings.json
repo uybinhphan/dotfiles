@@ -1,11 +1,21 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(python 40_system/scripts/update_index.py)",
+      "Bash(python 40_system/scripts/append_log.py \"feat\" \"domains/obsidian/capture-workflow.md, domains/obsidian/youtube-capture-flow.md, domains/obsidian/quote-capture-flow.md, domains/language-learning/chinese-capture-flow.md, inbox templates, inbox samples\" \"Added capture workflow documentation, inbox templates, sample inbox items, and platform-specific capture flows\")",
+      "Bash(curl *)"
+    ],
+    "defaultMode": "default"
+  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
