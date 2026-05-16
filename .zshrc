@@ -30,7 +30,7 @@ export PATH="$PATH:$HOME/.local/bin"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Enable syntax highlighting
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # Enable zsh-completions
 # Check if Homebrew is installed and add zsh-completions to FPATH
