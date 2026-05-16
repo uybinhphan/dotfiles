@@ -1,0 +1,25 @@
+name: ShellCheck
+
+on:
+  push:
+    paths:
+      - "scripts/**.sh"
+      - ".zsh/plugins/**"
+      - ".config/dotfiles/setup-dotfiles.sh"
+  pull_request:
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck --severity=warning \
+            scripts/fsz.sh \
+            scripts/fszf.sh \
+            scripts/shutdown-timer.sh \
+            .config/dotfiles/setup-dotfiles.sh \
+            .zsh/plugins/reset-app-permissions.plugin.zsh
