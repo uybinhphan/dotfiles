@@ -30,7 +30,7 @@ cc() {
 }
 
 ccds() {
-  if [ -z "$DEEPSEEK_API_KEY" ]; then
+  if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
     echo "Missing DEEPSEEK_API_KEY. Add it to ~/.zsh_secrets"
     return 1
   fi
