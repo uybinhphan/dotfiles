@@ -27,6 +27,9 @@ defaults write -g NSUserKeyEquivalents -dict-add "Shut Down…" "@~S"
 # Set restart shortcut "Restart…" to Cmd+Option+R
 defaults write -g NSUserKeyEquivalents -dict-add "Restart…" "@~R"
 
+# Disable disk sleep (prevents external SSD from sleeping)
+sudo pmset -a disksleep 0
+
 # Restart affected applications
 killall Dock
 killall Finder
