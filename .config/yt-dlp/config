@@ -1,2 +1,3 @@
--f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]
+# macOS: ưu tiên h264 (avc1) thay vì VP9 — đảm bảo mở được native
+-f "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4]"
 --merge-output-format mp4
