@@ -87,3 +87,6 @@ if [ -f "$HOME/.zsh_secrets" ]; then
 fi
 
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+# OpenClaw Completion
+source "/Users/uybinh/.openclaw/completions/openclaw.zsh"
