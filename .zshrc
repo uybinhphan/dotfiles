@@ -69,24 +69,8 @@ eval "$(zoxide init zsh)"
 
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
-# Lazy-load pyenv — only initialize when pyenv is first called
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-if [[ -d $PYENV_ROOT ]]; then
-    pyenv() {
-        unfunction pyenv
-        eval "$(command pyenv init -)"
-        pyenv "$@"
-    }
-fi
-
 source "$HOME/.openclaw/completions/openclaw.zsh"
 
 if [ -f "$HOME/.zsh_secrets" ]; then
     source "$HOME/.zsh_secrets"
 fi
-
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
-# OpenClaw Completion
-source "/Users/uybinh/.openclaw/completions/openclaw.zsh"
