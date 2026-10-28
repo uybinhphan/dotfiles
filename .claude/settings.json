@@ -7,7 +7,7 @@
       "Bash(python 40_system/scripts/append_log.py \"feat\" \"domains/obsidian/capture-workflow.md, domains/obsidian/youtube-capture-flow.md, domains/obsidian/quote-capture-flow.md, domains/language-learning/chinese-capture-flow.md, inbox templates, inbox samples\" \"Added capture workflow documentation, inbox templates, sample inbox items, and platform-specific capture flows\")",
       "Bash(curl *)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
@@ -25,6 +25,16 @@
   },
   "language": "Vietnamese",
   "effortLevel": "high",
+  "remote": {
+    "defaultEnvironmentId": "env_01GseTePzbJCMwwGxDixcyQq"
+  },
+  "tui": "fullscreen",
   "editorMode": "normal",
-  "agentPushNotifEnabled": true
+  "switchModelsOnFlag": true,
+  "agentPushNotifEnabled": true,
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  }
 }
