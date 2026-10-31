@@ -47,6 +47,7 @@ Commands in `~/.config/dotfiles/bin/` (on `PATH`):
 - `.claude/` — Claude Code user config: `CLAUDE.md`, `settings.json`, `statusline-command.sh`, `agents/` (custom subagents), `skills/yt-dlp-playlist/` (own skill), auto-memory under `projects/-Users-uybinh/memory/`. Only skills written here are tracked; `skills/synced/` (claude.ai sync) and `*-workspace/` eval folders are not
 - `.codex/AGENTS.md` — symlink to `.claude/CLAUDE.md`, so Codex follows the same global rules
 - `.config/yt-dlp/config` — yt-dlp defaults (mp4, h264)
+- `.config/ghostty/config`, `.config/atuin/config.toml` — terminal and shell-history config (overrides only)
 - `.github/workflows/` — CI: `shellcheck.yml` (ShellCheck for every tracked bash/sh file, `zsh -n` for zsh files), `gitleaks.yml` (secret scan)
 - `.claude/hooks/guard-bash.sh` — Claude Code PreToolUse guard for Bash
 - `.config/dotfiles/hooks/` — git hooks for the bare repo (`core.hooksPath`)
@@ -55,6 +56,8 @@ Commands in `~/.config/dotfiles/bin/` (on `PATH`):
 
 - **Shell**: Zsh with zsh-autosuggestions, zsh-fast-syntax-highlighting, zsh-history-substring-search, compinit caching (24h TTL)
 - **Prompt**: Starship
+- **Terminal**: Ghostty (`.config/ghostty/config`; Option sends Alt so fzf's Alt-C works)
+- **History search**: atuin owns Ctrl-R (SQLite history, `.config/atuin/config.toml`); ↑/↓ stay on zsh-history-substring-search
 - **Node**: fnm (Fast Node Manager) — replaces nvm
 - **Navigation**: zoxide (`z` command)
 - **File listing**: eza (replaces `ls`)
