@@ -37,7 +37,9 @@ The setup script (`~/.config/dotfiles/setup-dotfiles.sh`) is macOS-only. It inst
 - `scripts/` — standalone utility scripts (not auto-run)
 - `.claude/` — Claude Code user config: `CLAUDE.md`, `settings.json`, `statusline-command.sh`, auto-memory under `projects/-Users-uybinh/memory/`
 - `.config/yt-dlp/config` — yt-dlp defaults (mp4, h264)
-- `.github/workflows/shellcheck.yml` — ShellCheck CI for scripts and setup
+- `.github/workflows/` — CI: `shellcheck.yml` (scripts and setup), `gitleaks.yml` (secret scan)
+- `.claude/hooks/guard-bash.sh` — Claude Code PreToolUse guard for Bash
+- `.config/dotfiles/hooks/` — git hooks for the bare repo (`core.hooksPath`)
 
 ## Key Tools Configured
 
@@ -60,4 +62,9 @@ The setup script (`~/.config/dotfiles/setup-dotfiles.sh`) is macOS-only. It inst
 
 ## Secrets
 
-API keys live in `~/.zsh_secrets` (untracked, mode 600), sourced at the end of `.zshrc`. Never commit it. git-crypt is installed by the Brewfile but not configured yet (no `.gitattributes`), so nothing in the repo is encrypted.
+API keys live in the macOS Keychain and are read only by the function that needs them (e.g. `ccds` runs `security find-generic-password -a "$USER" -s DEEPSEEK_API_KEY -w`). Nothing exports secrets into every shell. Add a key with `security add-generic-password -a "$USER" -s NAME -U -w` (prompts for the value). git-crypt is installed by the Brewfile but not configured (no `.gitattributes`), so nothing in the repo is encrypted.
+
+Guards:
+- `.config/dotfiles/hooks/pre-commit` runs gitleaks on staged changes; the bare repo uses it via `core.hooksPath` (set by the setup script). `.github/workflows/gitleaks.yml` scans every push.
+- `.claude/hooks/guard-bash.sh` is a Claude Code PreToolUse hook: it blocks catastrophic commands (rm on `/` or `$HOME`, `dd` to devices, `mkfs`, `curl | sh`) and forces a prompt for destructive `dotfiles` commands and Keychain/secret reads.
+- `.claude/settings.json` denies reading SSH private keys and `~/.claude/.credentials.json`.
