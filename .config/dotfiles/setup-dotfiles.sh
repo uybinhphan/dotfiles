@@ -331,7 +331,7 @@ configure_macos() {
     
     if [[ -f "$HOME/.config/dotfiles/.macos" ]]; then
         log_info "Applying macOS settings from .macos script..."
-        source "$HOME/.config/dotfiles/.macos"
+        bash "$HOME/.config/dotfiles/.macos"
         log_success "macOS settings applied"
     else
         log_warning "No .macos configuration script found"

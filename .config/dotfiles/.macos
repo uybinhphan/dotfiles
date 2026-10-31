@@ -2,15 +2,17 @@
 
 # macOS Configuration Script
 # This script applies common macOS settings to enhance usability and productivity.
-# Usage: Source this script in your terminal or include it in your setup process.
+# Usage: bash ~/.config/dotfiles/.macos (also run by setup-dotfiles.sh)
 
 # Set Dock size and magnification
 defaults write com.apple.dock tilesize -int 40 # Set Dock icon size to 40 pixels
 # defaults write com.apple.dock magnification -bool true  # Enable magnification
 # defaults write com.apple.dock largesize -int 56 # Set magnified icon size to 56 pixels
 
-# Move Dock to the right side of the screen
+# Keep Dock at the bottom of the screen
 defaults write com.apple.dock orientation -string "bottom"  # Set Dock position to bottom
+# Don't rearrange Spaces based on most recent use
+defaults write com.apple.dock mru-spaces -bool false
 
 # Set bottom-left hotcorner to Mission Control 
 defaults write com.apple.dock wvous-bl-corner -int 2  # Bottom-left corner for Mission Control
@@ -21,6 +23,29 @@ defaults write com.apple.dock wvous-br-corner -int 3  # Bottom-right corner for 
 defaults write com.apple.finder ShowStatusBar -bool true  # Show status bar
 # Show path bar in Finder
 defaults write com.apple.finder ShowPathbar -bool true  # Show path bar
+# Use list view in all Finder windows
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# Show all filename extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+# Keep folders on top when sorting by name
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+# Search the current folder by default
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+# Avoid creating .DS_Store files on network and USB volumes (external SSD)
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+# Keyboard: fastest key repeat available in System Settings
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+# Disable auto-correct
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Expand save panel by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+# Save new documents to disk (not iCloud) by default
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Set shutdown shortcut "Shut Down…" to Cmd+Option+S
 defaults write -g NSUserKeyEquivalents -dict-add "Shut Down…" "@~S"
