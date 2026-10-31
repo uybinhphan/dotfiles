@@ -1,6 +1,8 @@
 tap "oven-sh/bun", trusted: true
 # Password hashing library and CLI utility
 brew "argon2"
+# Improved shell history for zsh, bash, fish and nushell
+brew "atuin"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -91,10 +93,10 @@ brew "oven-sh/bun/bun"
 cask "docker-desktop"
 cask "font-caskaydia-cove-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Cross-platform Git credential storage for multiple hosting providers
 cask "git-credential-manager"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
 # Discover, download, and run local LLMs
 cask "lm-studio"
 # Knowledge base that works on top of a local folder of plain text Markdown files

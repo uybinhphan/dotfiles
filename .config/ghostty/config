@@ -1,0 +1,10 @@
+# https://ghostty.org/docs/config/reference
+# Only overrides. The default font (JetBrains Mono with built-in Nerd Font
+# symbols) already renders eza and Starship icons.
+
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+
+# fzf's Alt-C (cd into a directory) needs Option to send Alt
+macos-option-as-alt = true
+
+window-save-state = always
