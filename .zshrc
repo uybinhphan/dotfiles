@@ -71,7 +71,3 @@ eval "$(zoxide init zsh)"
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
 source "$HOME/.openclaw/completions/openclaw.zsh"
-
-if [ -f "$HOME/.zsh_secrets" ]; then
-    source "$HOME/.zsh_secrets"
-fi

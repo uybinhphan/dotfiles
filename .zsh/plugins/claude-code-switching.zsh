@@ -1,5 +1,5 @@
 # Claude Code switching plugin
-# Safe to commit: no API keys here.
+# Safe to commit: no API keys here. `ccds` reads DEEPSEEK_API_KEY from the macOS Keychain.
 # Provides `cc` and `ccds` commands to switch between different Claude Code providers (Anthropic, DeepSeek, etc.) by setting/unsetting environment variables.
 # Usage:
 #   - `cc [args]`: Run `claude` with default environment (Anthropic API or normal login).
@@ -30,13 +30,17 @@ cc() {
 }
 
 ccds() {
-  if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
-    echo "Missing DEEPSEEK_API_KEY. Add it to ~/.zsh_secrets"
+  # Read from Keychain at call time so the key never sits in every shell's env
+  local key
+  key=$(security find-generic-password -a "$USER" -s DEEPSEEK_API_KEY -w 2>/dev/null)
+  if [ -z "$key" ]; then
+    echo "Missing DEEPSEEK_API_KEY in Keychain. Add it with:"
+    echo '  security add-generic-password -a "$USER" -s DEEPSEEK_API_KEY -U -w'
     return 1
   fi
 
   ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic" \
-  ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
+  ANTHROPIC_AUTH_TOKEN="$key" \
   ANTHROPIC_MODEL="deepseek-v4-pro" \
   ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro" \
   ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro" \
