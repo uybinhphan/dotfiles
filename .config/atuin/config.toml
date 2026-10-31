@@ -1,0 +1,7 @@
+# https://docs.atuin.sh/configuration/config/
+# Only overrides; everything else is atuin's default.
+
+# Homebrew handles upgrades
+update_check = false
+
+style = "compact"

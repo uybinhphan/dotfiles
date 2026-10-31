@@ -67,6 +67,8 @@ fi
 
 eval "$(fnm env --use-on-cd --shell zsh)"
 eval "$(zoxide init zsh)"
+# After the fzf plugin so atuin owns Ctrl-R; up/down stay on history-substring-search
+eval "$(atuin init zsh --disable-up-arrow)"
 
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
