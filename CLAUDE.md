@@ -36,7 +36,7 @@ Commands in `~/.config/dotfiles/bin/` (on `PATH`):
 
 - `.zshrc` — Zsh entry point; sources plugins from `~/.zsh/plugins/`
 - `.zsh/plugins/` — custom plugins: `eza.plugin.zsh`, `fzf.plugin.zsh`, `reset-app-permissions.plugin.zsh`, `claude-code-switching.zsh`, `ollama.plugin.zsh`
-- `.gitconfig` — git user config and aliases (`lg`, `recent`, `amend`, etc.)
+- `.gitconfig` — git user config and aliases (`lg`, `recent`, `amend`, etc.). The repo is public, so private hosts go in `~/.gitconfig.local` (untracked, included last; git skips it if missing)
 - `.config/git/ignore` — global gitignore (git's default path, so `core.excludesfile` stays unset); Claude Code also appends to it
 - `.config/starship.toml` — Starship prompt config (minimal: 10 active modules)
 - `.config/dotfiles/Brewfile` — snapshot of installed taps, formulae, casks and VS Code extensions, maintained by `brewfile-sync`

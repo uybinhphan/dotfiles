@@ -29,18 +29,12 @@
 	colorMoved = default		# Show moved lines as separate blocks instead of delete/add
 [init]
 	defaultBranch = main
-[credential "http://127.0.0.1:3002"]
-	provider = generic
-[credential "https://macmini.tailb63393.ts.net:3002"]
-	provider = generic
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
-[credential "https://dev.azure.com"]
-	useHttpPath = true
 [core]
 	pager = delta
 [interactive]
@@ -49,3 +43,7 @@
 	navigate = true
 [merge]
 	conflictStyle = zdiff3
+
+# Machine-specific and private hosts (not tracked). Last, so it can override.
+[include]
+	path = ~/.gitconfig.local
