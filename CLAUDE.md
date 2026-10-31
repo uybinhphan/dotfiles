@@ -44,7 +44,8 @@ Commands in `~/.config/dotfiles/bin/` (on `PATH`):
 - `.config/dotfiles/.macos` — macOS system defaults (Dock, Finder, Keyboard, Save panel, power); run with `bash`, not `source`
 - `.config/dotfiles/scripts/` — post-install scripts auto-run by setup
 - `scripts/` — standalone utility scripts (not auto-run)
-- `.claude/` — Claude Code user config: `CLAUDE.md`, `settings.json`, `statusline-command.sh`, auto-memory under `projects/-Users-uybinh/memory/`
+- `.claude/` — Claude Code user config: `CLAUDE.md`, `settings.json`, `statusline-command.sh`, `agents/` (custom subagents), `skills/yt-dlp-playlist/` (own skill), auto-memory under `projects/-Users-uybinh/memory/`. Only skills written here are tracked; `skills/synced/` (claude.ai sync) and `*-workspace/` eval folders are not
+- `.codex/AGENTS.md` — symlink to `.claude/CLAUDE.md`, so Codex follows the same global rules
 - `.config/yt-dlp/config` — yt-dlp defaults (mp4, h264)
 - `.github/workflows/` — CI: `shellcheck.yml` (ShellCheck for every tracked bash/sh file, `zsh -n` for zsh files), `gitleaks.yml` (secret scan)
 - `.claude/hooks/guard-bash.sh` — Claude Code PreToolUse guard for Bash
