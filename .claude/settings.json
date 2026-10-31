@@ -2,10 +2,34 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m ' *)",
-      "Bash(curl *)"
+      "Bash(git commit -m ' *)"
+    ],
+    "deny": [
+      "Read(~/.zsh_secrets)",
+      "Read(~/.ssh/id_*)",
+      "Read(~/.ssh/macminikey)",
+      "Read(~/.claude/.credentials.json)"
+    ],
+    "ask": [
+      "Read(~/.ssh/**)",
+      "Bash(security find-generic-password *)",
+      "Bash(security dump-keychain *)"
     ],
     "defaultMode": "auto"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/hooks/guard-bash.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
