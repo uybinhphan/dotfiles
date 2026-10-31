@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Block commits that add secrets. The work tree is all of $HOME, so one wrong
+# `dotfiles add` is enough to publish a key to the public repo.
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+    echo "pre-commit: gitleaks is not installed (brew install gitleaks)" >&2
+    exit 1
+fi
+
+exec gitleaks git --pre-commit --staged --redact --no-banner --verbose

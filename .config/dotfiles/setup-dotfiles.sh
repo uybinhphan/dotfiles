@@ -233,6 +233,8 @@ apply_dotfiles() {
         log_error "Failed to checkout dotfiles. Please check for conflicts."
     fi
 
+    dotfiles config core.hooksPath "$HOME/.config/dotfiles/hooks"
+
     log_success "Dotfiles applied successfully"
 }
 
