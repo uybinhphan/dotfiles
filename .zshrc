@@ -22,6 +22,7 @@ alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
 
 export PATH="$PATH:$HOME/.local/bin"
+export HOMEBREW_BUNDLE_FILE="$HOME/.config/dotfiles/Brewfile"
 
 # History
 HISTFILE=~/.zsh_history
