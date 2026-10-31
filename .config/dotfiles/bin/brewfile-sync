@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Rewrite the Brewfile as a snapshot of what is installed (taps, formulae,
+# casks, VS Code extensions), then show what changed so it can be reviewed
+# before committing. --check only reports drift and exits 1 if there is any.
+#
+# npm and uv globals are left out on purpose: a fresh machine has no npm until
+# fnm installs Node, so `brew bundle` would fail on those entries.
+
+set -euo pipefail
+
+brewfile="${HOMEBREW_BUNDLE_FILE:-$HOME/.config/dotfiles/Brewfile}"
+types=(--tap --formula --cask --vscode)
+
+if [ "${1:-}" = "--check" ]; then
+    diff -u "$brewfile" <(brew bundle dump --file=- "${types[@]}") && echo "Brewfile is in sync"
+    exit
+fi
+
+brew bundle dump --force --file="$brewfile" "${types[@]}"
+/usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" diff --stat -- "$brewfile"

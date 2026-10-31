@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Pull the dotfiles, then update every package manager this setup relies on.
+
+set -euo pipefail
+
+dotfiles() { /usr/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"; }
+step() { printf '\n\033[0;36m==>\033[0m %s\n' "$1"; }
+
+step "Pulling dotfiles"
+dotfiles pull --ff-only
+
+step "Homebrew"
+brew update
+brew upgrade
+brew bundle install --file="${HOMEBREW_BUNDLE_FILE:-$HOME/.config/dotfiles/Brewfile}"
+brew cleanup
+
+step "uv tools"
+uv tool upgrade --all
+
+step "Claude Code"
+claude update
+
+step "Brewfile drift"
+"$HOME/.config/dotfiles/bin/brewfile-sync" --check || echo "Run brewfile-sync to record these changes."

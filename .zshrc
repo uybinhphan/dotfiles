@@ -21,7 +21,7 @@ alias now="date +\"%T\""
 alias ip="curl -s ipinfo.io/ip"
 alias weather="curl wttr.in"
 
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.config/dotfiles/bin"
 export HOMEBREW_BUNDLE_FILE="$HOME/.config/dotfiles/Brewfile"
 
 # History
