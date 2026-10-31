@@ -1,25 +1,31 @@
-name: ShellCheck
+name: Shell lint
 
 on:
   push:
-    paths:
-      - "scripts/**.sh"
-      - ".zsh/plugins/**"
-      - ".config/dotfiles/setup-dotfiles.sh"
   pull_request:
 
 jobs:
-  shellcheck:
-    name: ShellCheck
+  lint:
+    name: ShellCheck + zsh -n
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Run ShellCheck
+      - name: Install zsh
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh
+
+      # Pick the linter from the file itself: zsh files only get a syntax check
+      # (ShellCheck does not support zsh), bash/sh scripts get ShellCheck.
+      - name: Lint every tracked shell file
         run: |
-          shellcheck --severity=warning \
-            scripts/fsz.sh \
-            scripts/fszf.sh \
-            scripts/shutdown-timer.sh \
-            .config/dotfiles/setup-dotfiles.sh \
-            .zsh/plugins/reset-app-permissions.plugin.zsh
+          rc=0
+          while IFS= read -r f; do
+            first=$(head -1 "$f")
+            case "$f:$first" in
+              *.zsh:*|.zshrc:*|*:'#!'*zsh*)
+                zsh -n "$f" || rc=1 ;;
+              *:'#!'*bash*|*:'#!'*/sh)
+                shellcheck --severity=warning "$f" || rc=1 ;;
+            esac
+          done < <(git ls-files)
+          exit $rc

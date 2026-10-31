@@ -32,7 +32,8 @@ rate_color() {
 
 make_bar() {
   local pct=$1
-  local filled=$(echo "$pct * 8 / 100" | bc)
+  local filled
+  filled=$(echo "$pct * 8 / 100" | bc)
   local empty=$((8 - filled))
   local bar=""
   local i
