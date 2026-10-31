@@ -24,6 +24,14 @@ dotfiles log --oneline    # history
 
 The setup script (`~/.config/dotfiles/setup-dotfiles.sh`) is macOS-only. It installs Xcode CLT, Homebrew, clones the bare repo, backs up conflicting files to `~/.dotfiles-backup-YYYYMMDDHHMMSS/`, checks out dotfiles, runs `brew bundle`, and executes all scripts in `~/.config/dotfiles/scripts/`.
 
+## Maintenance
+
+Commands in `~/.config/dotfiles/bin/` (on `PATH`):
+
+- `dotfiles-update` — pull dotfiles, `brew update/upgrade/bundle install/cleanup`, `uv tool upgrade --all`, `claude update`, then report Brewfile drift
+- `brewfile-sync` — rewrite the Brewfile as a snapshot of installed taps, formulae, casks and VS Code extensions (`brew bundle dump`); review with `dotfiles diff` before committing. `--check` only reports drift. npm/uv globals are deliberately excluded
+- `dotfiles-doctor` — read-only health check: uncommitted/untracked files, untracked `~/.config/*` dirs, hook wiring, gitleaks history scan, Brewfile drift, zsh syntax
+
 ## Repository Structure
 
 - `.zshrc` — Zsh entry point; sources plugins from `~/.zsh/plugins/`
@@ -31,13 +39,14 @@ The setup script (`~/.config/dotfiles/setup-dotfiles.sh`) is macOS-only. It inst
 - `.gitconfig` — git user config and aliases (`lg`, `recent`, `amend`, etc.)
 - `.gitignore_global` — exists locally but is neither tracked nor wired up (`core.excludesfile` is unset)
 - `.config/starship.toml` — Starship prompt config (minimal: 10 active modules)
-- `.config/dotfiles/Brewfile` — Homebrew package list (formulae + casks + VSCode extensions)
+- `.config/dotfiles/Brewfile` — snapshot of installed taps, formulae, casks and VS Code extensions, maintained by `brewfile-sync`
+- `.config/dotfiles/bin/` — maintenance commands (see Maintenance)
 - `.config/dotfiles/.macos` — macOS system defaults (Dock, Finder, Keyboard, Save panel, power); run with `bash`, not `source`
 - `.config/dotfiles/scripts/` — post-install scripts auto-run by setup
 - `scripts/` — standalone utility scripts (not auto-run)
 - `.claude/` — Claude Code user config: `CLAUDE.md`, `settings.json`, `statusline-command.sh`, auto-memory under `projects/-Users-uybinh/memory/`
 - `.config/yt-dlp/config` — yt-dlp defaults (mp4, h264)
-- `.github/workflows/` — CI: `shellcheck.yml` (scripts and setup), `gitleaks.yml` (secret scan)
+- `.github/workflows/` — CI: `shellcheck.yml` (ShellCheck for every tracked bash/sh file, `zsh -n` for zsh files), `gitleaks.yml` (secret scan)
 - `.claude/hooks/guard-bash.sh` — Claude Code PreToolUse guard for Bash
 - `.config/dotfiles/hooks/` — git hooks for the bare repo (`core.hooksPath`)
 
