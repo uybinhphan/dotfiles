@@ -48,11 +48,12 @@ Hướng dẫn cá nhân áp dụng cho mọi phiên Claude Code của user `uyb
 ## Claude API / Anthropic SDK
 
 Khi build app dùng Claude API:
-- **Model mặc định cho lên kế hoạch / reasoning nặng**: Opus 4.7 (`claude-opus-4-7`).
-- **Model mặc định cho triển khai task / production**: Sonnet 4.6 (`claude-sonnet-4-6`).
-- **Haiku 4.5** (`claude-haiku-4-5`) cho task đơn giản, latency-sensitive.
+- **Model mặc định cho lên kế hoạch / reasoning nặng**: Opus 5.5 (`claude-opus-5-5`).
+- **Model mặc định cho triển khai task / production**: Sonnet 5.5 (`claude-sonnet-5-5`).
+- **Haiku 5.5** (`claude-haiku-5-5`) cho task đơn giản, latency-sensitive.
+- **Fable 5.1** (`claude-fable-5-1`) chỉ khi cần model mạnh nhất — giá gấp ~2.5 lần Opus 5.5.
 - Luôn bật **prompt caching** cho prompts lặp lại (system prompt dài, tool definitions, few-shot).
-- Khi user nói "model mạnh nhất" / "model nhanh nhất" → dùng Opus 4.7 / Haiku 4.5 tương ứng.
+- Khi user nói "model mạnh nhất" / "model nhanh nhất" → dùng Fable 5.1 / Haiku 5.5 tương ứng.
 
 ## Khi xung đột với project CLAUDE.md
 
